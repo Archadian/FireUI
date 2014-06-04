@@ -9,4 +9,11 @@ libs/LibStub/LibStub.lua
 libs/LibAnimation/LibAnimation.lua
 libs/LibAnimation/LibAddonMenu-1.0.lua
 
+core/config.lua
+core/functions.lua
+
+components/resources.lua
+components/points.lua
+components/menu.lua
+
 FireUI.lua
