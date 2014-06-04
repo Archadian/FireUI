@@ -1,0 +1,12 @@
+## Title: FireUI
+## APIVersion: 100004
+## Version: 0.0.1
+## Author: me@falconerd.com
+## SavedVariables: FireUISavedVariables
+## OptionalDependsOn: LibAddonMenu-1.0
+
+libs/LibStub/LibStub.lua
+libs/LibAnimation/LibAnimation.lua
+libs/LibAnimation/LibAddonMenu-1.0.lua
+
+FireUI.lua
