@@ -21,9 +21,14 @@ _FireUI = {
             xp = { hidden = false, color = { 0, .7, .9, 1 } },
             vp = { hidden = false, color = { .96, .95, .97, 1 } },
             ap = { hidden = false, color = { .5, 1, .5, 1 } },
-            scroll = { duration = 10000, direction = 'up' },
+            scroll = { duration = 10000, direction = 'up', speed = 20 },
             dimensions = { 150, 20 },
             anchor = { CENTER, TOP },
+            font = {
+                face = "Montserrat",
+                size = 18,
+                shadow = "soft-shadow-thin"
+            }
         },
 
         resources = {
@@ -33,8 +38,8 @@ _FireUI = {
                 animation = { duration = 1000 },
                 anchor = { CENTER, BOTTOM },
             },
-            stamina = { hidden = false, color = { .48, .55, .23, 1 },
-                color2 = { .6, 1, .5, 1 },
+            stamina = { hidden = false, color = { .76, .6, .12, 1 },
+                color2 = { .9, .78, .41, 1 },
                 dimensions = { 300, 16 }, offset = { 0, -150 },
                 animation = { duration = 1000 },
                 anchor = { CENTER, BOTTOM },

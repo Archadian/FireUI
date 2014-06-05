@@ -69,7 +69,11 @@ end
 
 function _FireUI.points:update( millisecondsRunning )
 
-    if ( self.lastUpdate + 1250 > GetGameTimeMilliseconds() ) then return end
+    -- This is to prevent vertical overlapping... Wonder what to do about the horz problem
+    local speed = _FireUI.savedVariables.points.scroll.speed
+    local delay = ( 1000 / speed ) * _FireUI.savedVariables.points.font.size
+
+    if ( self.lastUpdate + delay > GetGameTimeMilliseconds() ) then return end
 
     local label
     local color
@@ -83,7 +87,7 @@ function _FireUI.points:update( millisecondsRunning )
             color = _FireUI.savedVariables.points[ string.lower( string.sub( self.queue[ 1 ], -2, -1 ) ) ].color
 
             label:SetText( self.queue[ 1 ] )
-            label:SetColor( color[ 1 ], color[ 2 ], color[ 3 ], color[ 4 ] )
+            label:SetColor( unpack( color ) )
 
             table.remove( self.queue, 1 )
             table.insert( self.used_labels, { label, GetGameTimeMilliseconds() }  )
@@ -122,6 +126,9 @@ end
 function _FireUI.points:createLabel()
 
     local label
+    local fontFace = _FireUI.savedVariables.points.font.face
+    local fontSize = _FireUI.savedVariables.points.font.size
+    local fontShadow = _FireUI.savedVariables.points.font.shadow
     if ( #self.free_labels ~= 0 ) then
         label = self.free_labels[ 1 ][ 1 ]
         table.remove( self.free_labels, 1 )
@@ -129,7 +136,7 @@ function _FireUI.points:createLabel()
 
     if label == nil then label = WINDOW_MANAGER:CreateControl( nil, self.backdrop, CT_LABEL ) end
 
-    label:SetFont( _FireUI:font( 18 ) )
+    label:SetFont( _FireUI:font( fontFace, fontSize, fontShadow ) )
     label:SetAnchor( BOTTOMLEFT, self.backdrop, 0, 0, 0 )
 
     return label
@@ -139,9 +146,10 @@ end
 function _FireUI.points:animateLabel( label, gameTime )
 
     local duration = _FireUI.savedVariables.points.scroll.duration
+    local speed = _FireUI.savedVariables.points.scroll.speed
     local direction = _FireUI.savedVariables.points.scroll.direction
-    local distanceX = ( direction == 'left' or direction == 'right' ) and ( duration / 80 ) or 0
-    local distanceY = ( direction == 'up' or direction == 'down' ) and ( duration / 80 ) or 0
+    local distanceX = ( direction == 'left' or direction == 'right' ) and ( ( duration / 1000 ) * speed ) or 0
+    local distanceY = ( direction == 'up' or direction == 'down' ) and ( ( duration / 1000 ) * speed ) or 0
     local flip = ( direction == 'left' or direction == 'up' )
     local toX = ( flip ) and -distanceX or distanceX
     local toY = ( flip ) and -distanceY or distanceY

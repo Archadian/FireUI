@@ -39,6 +39,24 @@ function _FireUI.menu:initialize()
         )
 
     end
+    self.LAM:AddDropdown( self.panelID, 'FireUI.menu.points.font.face',
+        'Font Face', "The font face used to display points gained.",
+        { "Montserrat", "ZoFontGame" },
+        function() return _FireUI.savedVariables.points.font.face end,
+        function( value ) _FireUI.savedVariables.points.font.face = value end
+    )
+    self.LAM:AddDropdown( self.panelID, 'FireUI.menu.points.font.shadow',
+        'Font Shadow', "The font shadow used to display points gained.",
+        { "none", "soft-shadow-thin", "soft-shadow-thick", "shadow" },
+        function() return _FireUI.savedVariables.points.font.shadow end,
+        function( value ) _FireUI.savedVariables.points.font.shadow = value end
+    )
+    self.LAM:AddSlider( self.panelID, 'FireUI.menu.points.font.size', 
+        'Font Size', "The size of the font used to display points gained.",
+        1, 50, 1,
+        function() return _FireUI.savedVariables.points.font.size end,
+        function( value ) _FireUI.savedVariables.points.font.size = value end
+    )
 
     -- Set the duration
     self.LAM:AddSlider( self.panelID, 'FireUI.menu.points.duration', 
@@ -48,8 +66,16 @@ function _FireUI.menu:initialize()
         function( value ) _FireUI.savedVariables.points.scroll.duration = value * 1000 end
     )
 
+    -- Set the speed
+    self.LAM:AddSlider( self.panelID, 'FireUI.menu.points.speed', 
+        'Speed', "The speed the text travels in pixels per second.",
+        1, 100, 2,
+        function() return _FireUI.savedVariables.points.scroll.speed end,
+        function( value ) _FireUI.savedVariables.points.scroll.speed = value end
+    )
+
     -- Set the direction
-    self.LAM:AddDropdown( self.panelID, 'FireUI.menu.point.direction',
+    self.LAM:AddDropdown( self.panelID, 'FireUI.menu.points.direction',
         'Direction', "The direction in which the text will travel.",
         { 'Up', 'Down', 'Left', 'Right' },
         function() return ( _FireUI.savedVariables.points.scroll.direction:gsub( "%a", string.upper, 1 ) ) end,
