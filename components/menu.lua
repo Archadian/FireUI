@@ -90,36 +90,51 @@ function _FireUI.menu:initialize()
 
         local resource = tostring( k )
 
-        self.LAM:AddCheckbox( self.panelID, 'FireUI.menu.resources.' .. resource,
-            resource:gsub( "%a", string.upper, 1 ) .. ' Bar', 
-            "Whether or not to display the FireUI " .. resource .." bar.",
-            function() return not _FireUI.savedVariables.resources[ resource ].hidden end,
-            function() self:toggleBar( resource ) end
-        )
-        self.LAM:AddSlider( self.panelID, 'FireUI.menu.resources.' .. resource ..'.dimensions[ 1 ]',
-            '    Width', "The width of the FireUI " .. resource .." bar in pixels.",
-            0, 2560, 10,
-            function() return _FireUI.savedVariables.resources[ resource ].dimensions[ 1 ] end,
-            function( value ) self:adjustBarSize( resource, value ) end
-        )
-        self.LAM:AddSlider( self.panelID, 'FireUI.menu.resources.' .. resource ..'.dimensions[ 2 ]',
-            '    Height', "The height of the FireUI " .. resource .." bar in pixels.",
-            0, 100, 1,
-            function() return _FireUI.savedVariables.resources[ resource ].dimensions[ 2 ] end,
-            function( value ) self:adjustBarSize( resource, nil, value ) end
-        )
-        self.LAM:AddColorPicker( self.panelID, 'FireUI.menu.resources.' .. resource ..'.color',
-            '    Colour', "The colour of the FireUI " .. resource .." bar.",
-            function() return unpack( _FireUI.savedVariables.resources[ resource ].color ) end,
-            function( r, g, b, a ) self:adjustBarColor( resource, r, g, b, a ) end
-        )
-        self.LAM:AddColorPicker( self.panelID, 'FireUI.menu.resources.' .. resource ..'.color2',
-            '    Secondary Colour', "The colour of the FireUI " .. resource .." bar's animation.",
-            function() return unpack( _FireUI.savedVariables.resources[ resource ].color2 ) end,
-            function( r, g, b, a ) self:adjustBarColor( resource, r, g, b, a, true ) end
-        )
+        if ( resource == 'mountStamina' ) then
+
+            -- Mount Stamina
+            self.LAM:AddCheckbox( self.panelID, 'FireUI.menu.resources.mountStamina',
+                'Mount Stamina Bar', 
+                "Whether or not to display the FireUI mount stamina bar.",
+                function() return not _FireUI.savedVariables.resources.mountStamina.hidden end,
+                function() _FireUI.savedVariables.resources.mountStamina.hidden = not _FireUI.savedVariables.resources.mountStamina.hidden end
+            )
+            
+        else
+
+            self.LAM:AddCheckbox( self.panelID, 'FireUI.menu.resources.' .. resource,
+                resource:gsub( "%a", string.upper, 1 ) .. ' Bar', 
+                "Whether or not to display the FireUI " .. resource .." bar.",
+                function() return not _FireUI.savedVariables.resources[ resource ].hidden end,
+                function() self:toggleBar( resource ) end
+            )
+            self.LAM:AddSlider( self.panelID, 'FireUI.menu.resources.' .. resource ..'.dimensions[ 1 ]',
+                '    Width', "The width of the FireUI " .. resource .." bar in pixels.",
+                0, 2560, 10,
+                function() return _FireUI.savedVariables.resources[ resource ].dimensions[ 1 ] end,
+                function( value ) self:adjustBarSize( resource, value ) end
+            )
+            self.LAM:AddSlider( self.panelID, 'FireUI.menu.resources.' .. resource ..'.dimensions[ 2 ]',
+                '    Height', "The height of the FireUI " .. resource .." bar in pixels.",
+                0, 100, 1,
+                function() return _FireUI.savedVariables.resources[ resource ].dimensions[ 2 ] end,
+                function( value ) self:adjustBarSize( resource, nil, value ) end
+            )
+            self.LAM:AddColorPicker( self.panelID, 'FireUI.menu.resources.' .. resource ..'.color',
+                '    Colour', "The colour of the FireUI " .. resource .." bar.",
+                function() return unpack( _FireUI.savedVariables.resources[ resource ].color ) end,
+                function( r, g, b, a ) self:adjustBarColor( resource, r, g, b, a ) end
+            )
+            self.LAM:AddColorPicker( self.panelID, 'FireUI.menu.resources.' .. resource ..'.color2',
+                '    Secondary Colour', "The colour of the FireUI " .. resource .." bar's animation.",
+                function() return unpack( _FireUI.savedVariables.resources[ resource ].color2 ) end,
+                function( r, g, b, a ) self:adjustBarColor( resource, r, g, b, a, true ) end
+            )
+
+        end
 
     end
+
 
 end
 

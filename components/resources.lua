@@ -21,7 +21,7 @@ end
 function _FireUI.resources:populate()
 
     for k, v in pairs( _FireUI.powers ) do
-        
+
         self[ v ].current, self[ v ].maximum, self[ v ].effectiveMaximum = GetUnitPower( 'player', k )
 
     end
@@ -146,6 +146,10 @@ function _FireUI.resources:update( eventCode, unitTag, powerIndex, powerType, po
 
             self:updateUltimate( powerValue, powerMax, powerEffectiveMax )
 
+        elseif ( powerType == POWERTYPE_MOUNT_STAMINA ) then
+
+            self:updateBar( powerType, powerValue, powerMax, powerEffectiveMax )
+
         else
 
         end
@@ -168,7 +172,17 @@ function _FireUI.resources:updateUltimate( powerValue, powerMax, powerEffectiveM
 end
 
 function _FireUI.resources:updateBar( powerType, powerValue, powerMax, powerEffectiveMax )
-    
+
+    -- Mount bar replaces stamina bar
+    if ( self.mounted and powerType == POWERTYPE_STAMINA ) then return end
+    if ( not self.mounted and powerType == POWERTYPE_MOUNT_STAMINA ) then return end
+    if ( self.mounted and powerType == POWERTYPE_MOUNT_STAMINA ) then powerType = POWERTYPE_STAMINA end
+
+    -- Werewolf bar replaces magicka bar
+    if ( self.werewolf and powerType == POWERTYPE_MAGICKA ) then return end
+    if ( not self.werewolf and powerType == POWERTYPE_WEREWOLF ) then return end
+    if ( self.werewolf and powerType == POWERTYPE_WEREWOLF ) then powerType = POWERTYPE_MAGICKA end
+
     local anim
     local animatedBar
     local bar
@@ -198,5 +212,27 @@ function _FireUI.resources:updateBar( powerType, powerValue, powerMax, powerEffe
 
     self[ resource ].current = powerValue
     self[ resource ].percentage = percentage
+
+end
+
+function _FireUI.resources:updateMount( mounted )
+
+    self.mounted = mounted
+    if ( self.mounted ) then
+        _FireUI.resources:updateBar( POWERTYPE_MOUNT_STAMINA, GetUnitPower( 'player', POWERTYPE_MOUNT_STAMINA ) )
+    else
+        _FireUI.resources:updateBar( POWERTYPE_STAMINA, GetUnitPower( 'player', POWERTYPE_STAMINA ) )
+    end
+
+end
+
+function _FireUI.resources:updateWerewolf( werewolf )
+
+    self.werewolf = werewolf
+    if ( self.werewolf ) then
+        _FireUI.resources:updateBar( POWERTYPE_WEREWOLF, GetUnitPower( 'player', POWERTYPE_WEREWOLF ) )
+    else
+        _FireUI.resources:updateBar( POWERTYPE_MAGICKA, GetUnitPower( 'player', POWERTYPE_MAGICKA ) )
+    end        
 
 end
