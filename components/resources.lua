@@ -138,17 +138,13 @@ function _FireUI.resources:update( eventCode, unitTag, powerIndex, powerType, po
 
     if ( context == 'player' ) then
 
-        if ( powerType == POWERTYPE_HEALTH or powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA ) then
+        if ( powerType == POWERTYPE_HEALTH or powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA or powerType == POWERTYPE_MOUNT_STAMINA or powerType == POWERTYPE_WEREWOLF ) then
 
             self:updateBar( powerType, powerValue, powerMax, powerEffectiveMax )
 
         elseif ( powerType == POWERTYPE_ULTIMATE ) then
 
             self:updateUltimate( powerValue, powerMax, powerEffectiveMax )
-
-        elseif ( powerType == POWERTYPE_MOUNT_STAMINA ) then
-
-            self:updateBar( powerType, powerValue, powerMax, powerEffectiveMax )
 
         else
 
