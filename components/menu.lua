@@ -130,6 +130,18 @@ function _FireUI.menu:initialize()
                 function() return unpack( _FireUI.savedVariables.resources[ resource ].color2 ) end,
                 function( r, g, b, a ) self:adjustBarColor( resource, r, g, b, a, true ) end
             )
+            self.LAM:AddDropdown( self.panelID, 'FireUI.menu.resources.' .. resource ..'.animation.mode',
+                '    Mode', "The direction in which the text will travel.",
+                { 'Horizontal', 'Vertical', 'Radial' },
+                function() return ( _FireUI.savedVariables.resources[ resource ].animation.mode ) end,
+                function( value ) _FireUI.savedVariables.resources[ resource ].animation.mode = value end
+            )
+            self.LAM:AddSlider( self.panelID, 'FireUI.menu.resources.' .. resource ..'.animation.duration', 
+                '    Duration', "The amount of time it takes for the animation.",
+                1, 20, 1,
+                function() return _FireUI.savedVariables.resources[ resource ].animation.duration / 1000 end,
+                function( value ) _FireUI.savedVariables.resources[ resource ].animation.duration = value * 1000 end
+            )
 
         end
 

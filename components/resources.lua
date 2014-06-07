@@ -169,6 +169,12 @@ end
 
 function _FireUI.resources:updateBar( powerType, powerValue, powerMax, powerEffectiveMax )
 
+    -- Temporary fix until WEREWOLF_STATE_CHANGE works correctly
+    if ( self.werewolf and powerValue == 0 ) then
+        self.werewolf = false
+        self:updateWerewolf( self.werewolf )
+    end
+
     -- Mount bar replaces stamina bar
     if ( self.mounted and powerType == POWERTYPE_STAMINA ) then return end
     if ( not self.mounted and powerType == POWERTYPE_MOUNT_STAMINA ) then return end
@@ -182,10 +188,10 @@ function _FireUI.resources:updateBar( powerType, powerValue, powerMax, powerEffe
     local anim
     local animatedBar
     local bar
+    local width
+    local height
     local resource = _FireUI.powers[ powerType ]
     local percentage = _FireUI:getPercentage( powerValue, powerMax )
-    local width = _FireUI.savedVariables.resources[ resource ].dimensions[ 1 ] * ( percentage / 100 )
-    local height = _FireUI.savedVariables.resources[ resource ].dimensions[ 2 ]
     local duration = _FireUI.savedVariables.resources[ resource ].animation.duration
     local libAnimation = _FireUI.libAnimation
     local current = self[ resource ].current
@@ -193,6 +199,17 @@ function _FireUI.resources:updateBar( powerType, powerValue, powerMax, powerEffe
     local percentageLabel = self[ resource ].percentageLabel
 
     if ( self[ resource ].anim ~= nil ) then self[ resource ].anim:Stop() end
+
+    if ( _FireUI.savedVariables.resources[ resource ].animation.mode == 'Horizontal' ) then
+        width = _FireUI.savedVariables.resources[ resource ].dimensions[ 1 ] * ( percentage / 100 )
+        height = _FireUI.savedVariables.resources[ resource ].dimensions[ 2 ]
+    elseif ( _FireUI.savedVariables.resources[ resource ].animation.mode == 'Vertical' ) then
+        width = _FireUI.savedVariables.resources[ resource ].dimensions[ 1 ]
+        height = _FireUI.savedVariables.resources[ resource ].dimensions[ 2 ] * ( percentage / 100 )
+    elseif ( _FireUI.savedVariables.resources[ resource ].animation.mode == 'Radial' ) then
+        width = _FireUI.savedVariables.resources[ resource ].dimensions[ 1 ] * ( percentage / 100 )
+        height = _FireUI.savedVariables.resources[ resource ].dimensions[ 2 ] * ( percentage / 100 )
+    end
 
     bar = ( powerValue > current ) and self[ resource ].animatedBar or self[ resource ].bar
     animatedBar = ( powerValue > current ) and self[ resource ].bar or self[ resource ].animatedBar
@@ -202,6 +219,7 @@ function _FireUI.resources:updateBar( powerType, powerValue, powerMax, powerEffe
     currentLabel:SetText( powerValue .. ' / ' .. powerMax )
     percentageLabel:SetText( percentage .. '%' )
     bar:SetWidth( width )
+    bar:SetHeight( height )
 
     self[ resource ].anim:ResizeTo( width, height, duration )
     self[ resource ].anim:Play()
