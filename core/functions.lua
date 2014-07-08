@@ -3,8 +3,8 @@ function _FireUI:toggleVisibility( cursorIsVisible )
 
     if ( not self.initialized ) then return end
 
-    for i = 1, #self.topLevelWindows do
-        self.topLevelWindows[ i ]:SetHidden( cursorIsVisible )
+    for i = 1, #self.frames do
+        self.frames[ i ].topLevelWindow:SetHidden( cursorIsVisible )
     end
 
 end
@@ -29,5 +29,11 @@ function _FireUI:hex2rgba( hex )
     local b = tonumber( '0x' .. hex:sub( 5, 6 ) )
     local a = tonumber( '0x' .. hex:sub( 7, 8 ) ) or 1
     return r, g, b, a
+
+end
+
+function _FireUI:combatEvent( ... )
+
+    local eventCode, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, log = ...
 
 end
